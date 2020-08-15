@@ -1,0 +1,53 @@
+<template>
+    <div if.bind="appState.userRole == 'admin'" > 
+        <div id="tracking">
+            <label for="link"> Enter tracking link
+                <input type="text" name="tracking-link" id="link" value.bind="_trackingLink">
+                <button class="btn btn-primary" click.delegate="addTrackingLink()" >Add</button>
+            </label>
+        </div>
+        <table class="table">
+            <thead>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Total
+                </th>
+                <th>Delivery location</th>
+                <th>
+                    Parcel type
+                </th>
+            </thead>
+            <tbody repeat.for="orderItem of _orderItems">
+                <td>
+                    ${orderItem.orderItemName}
+                </td>
+                <td>
+                    €${orderItem.orderItemPrice}
+                </td>
+                <td>
+                    ${orderItem.orderItemQuantity}
+                </td>
+                <td>
+                    €${orderItem.totalPrice}
+                </td>
+                <td>
+                    ${orderItem.deliveryLocation}
+                </td>
+                <td>
+                    <a route-href="route: orderitem-edit; params.bind: {id: orderItem.id}">Edit</a>
+                </td>
+            </tbody>
+        </table>
+    </div>
+    <div else>
+        <h1>Not found.</h1>
+    </div>
+</template>

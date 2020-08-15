@@ -1,0 +1,17 @@
+<template>
+    <label for="order-status-select"> Select parcel type
+        <select id="order-status-select" class="custom-select" value.bind="_selectedParcelType">
+            <option model.bind="null">Choose...</option>
+            <option repeat.for="parcelType of _parcelTypes" model.bind="parcelType">
+                ${parcelType.parcelTypeName}
+            </option>
+        </select>
+    </label>
+    <hr>
+    Parcel type info:
+    ${_selectedParcelType.parcelTypeName}-${_selectedParcelType.parcelDimensions}- Fee: €${_selectedParcelType.parcelSendingFee}
+    <hr>
+    <button class="btn btn-primary" click.delegate="updateParcelType()">
+        Save
+    </button>
+</template>

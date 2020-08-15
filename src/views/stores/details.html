@@ -1,0 +1,41 @@
+<template>
+    <h1>Details</h1>
+
+    <div>
+        <h4>Store</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                StoreName
+            </dt>
+            <dd class="col-sm-10">
+                ${_store.storeName}
+            </dd>
+            <dt class="col-sm-2">
+                StoreURL
+            </dt>
+            <dd class="col-sm-10">
+                ${_store.storeURL}
+            </dd>
+            <dt class="col-sm-2">
+                OrderCount
+            </dt>
+            <dd class="col-sm-10">
+                ${_store.orderCount}
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a href="/Stores/Edit/328af927-6088-4b9d-b08a-720a98a94733">Edit</a> |
+        <a route-href="route: stores-index">Back to List</a>
+    </div>
+
+    </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - WebApp - <a href="/Home/Privacy">Privacy</a>
+        </div>
+    </footer>
+</template>

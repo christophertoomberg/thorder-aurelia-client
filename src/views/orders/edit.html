@@ -1,0 +1,24 @@
+<template>
+  <div if.bind="appState.userRole == 'admin'">
+    <label for="order-status-select"> Select order status
+        <select id="order-status-select" class="custom-select" value.bind="_selectedOrderStatus">
+            <option model.bind="null">Choose...</option>
+            <option repeat.for="orderStatus of _orderStatuses" model.bind="orderStatus">
+                ${orderStatus.orderStatusName}
+            </option>
+        </select>
+    </label>
+    <hr>
+    Status:
+    ${_selectedOrderStatus.orderStatusName}-${_selectedOrderStatus.description}
+    <hr>
+    <button class="btn btn-primary" click.delegate="updateOrderStatus()">
+        Save
+    </button>
+  </div>
+  <div else>
+    <h1>
+        Not found.
+    </h1>
+  </div>
+</template>

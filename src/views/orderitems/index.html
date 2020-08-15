@@ -1,0 +1,67 @@
+<template>
+    <h1>My orders</h1>
+    <div if.bind="_alert != null" class="alert alert-danger" role="alert">
+        ${_alert.message}
+    </div>
+    <table if.bind="_orderItems.length > 0" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Order date
+                </th>
+                <th>
+                    Item name
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Quantity
+                </th>
+                <th>
+                    Sum
+                </th>
+                <th>
+                    Fee
+                </th>
+                <th>
+                    Total
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="orderitem of _orderItems">
+                <td>
+                    ${orderitem.orderDate}
+                </td>
+                <td>
+                    ${orderitem.orderItemName}
+                </td>
+                <td>
+                    €${orderitem.orderItemPrice}
+                </td>
+                <td>
+                    ${orderitem.orderItemQuantity}
+                </td>
+                <td>
+                    €${orderitem.totalPrice}
+                </td>
+                <td>
+                    €${orderitem.fee}
+                </td>
+                <td>
+                    €${orderitem.totalPrice + orderitem.fee}
+                </td>
+                <td>
+                    <a route-href="route: orderitem-details; params.bind: {id: orderitem.id}">Details</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div if.bind="_alert.message == null">
+        <div if.bind="_orderItems.length == 0">
+            <h4>No orders so far. <a href="#" route-href="route: home; params.bind: {}">Order here</a> </h4>
+        </div>
+    </div>
+
+</template>

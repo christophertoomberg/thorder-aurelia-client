@@ -1,0 +1,43 @@
+<template>
+
+    
+    <h1>Index</h1>
+
+    <p>
+        <a route-href="route: store-create; params.bind: {id: store.id}">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    StoreName
+                </th>
+                <th>
+                    StoreURL
+                </th>
+                <th>
+                    OrderCount
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="store of _stores">
+                <td>
+                    ${store.storeName}
+                </td>
+                <td>
+                    ${store.storeURL}
+                </td>
+                <td>
+                    ${store.orderCount}
+                </td>
+                <td>
+                    <a route-href="route: store-edit; params.bind: {id: store.id}">Edit</a> |
+                    <a route-href="route: store-details; params.bind: {id: store.id}">Details</a> |
+                    <a route-href="route: store-delete; params.bind: {id: store.id}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</template>

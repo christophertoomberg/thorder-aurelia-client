@@ -1,0 +1,64 @@
+<template>
+    <div>
+        <h4>Order</h4>
+
+        <div>
+            <i class="fas fa-arrow-left"></i>
+            <a route-href="route: orderitems-index" class="text-muted"> Back to List</a>
+        </div>
+        <hr />
+
+        <dl class="row">
+            <dt class="col-sm-2">
+                Order date
+            </dt>
+            <dd class="col-sm-10">
+                ${_orderDate}
+            </dd>
+            <dt class="col-sm-2">
+                Order status
+            </dt>
+            <dd class="col-sm-10">
+                <span class="badge badge-pill badge-${_statusType}">${_orderStatus.orderStatusName}</span>
+                <span class="badge badge-pill badge-${_statusType}">${_orderStatus.description}</span>
+            </dd>
+            <dt class="col-sm-2">
+                Order name
+            </dt>
+            <dd class="col-sm-10">
+                ${_orderItem.orderItemName}
+            </dd>
+            <dt class="col-sm-2">
+                Price
+            </dt>
+            <dd class="col-sm-10">
+                €${_orderItem.orderItemPrice}
+            </dd>
+            <dt class="col-sm-2">
+                Quantity
+            </dt>
+            <dd class="col-sm-10"> 
+                ${_orderItem.orderItemQuantity}
+            </dd>
+            <dt class="col-sm-2">
+                Delivery location
+            </dt>
+            <dd class="col-sm-10">
+                ${_orderItem.deliveryLocation}
+            </dd>
+            <dt if.bind="_comments.length > 0" class="col-sm-2">
+                Comment
+            </dt>
+            <dd if.bind="_comments.length > 0" repeat.for="comment of _comments" class="col-sm-10">
+                ${comment.commentText}
+            </dd>
+            <dt if.bind="_order.trackingLink != null" class="col-sm-2">
+                Tracking link
+            </dt>
+            <dd if.bind="_order.trackingLink != null" class="col-sm-10">
+                ${_order.trackingLink}
+            </dd>
+        </dl>
+    </div>
+    
+</template>

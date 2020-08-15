@@ -1,0 +1,43 @@
+<template>
+ <div if.bind="appState.userRole == 'admin'">
+    <table class="table">
+        <thead>
+            <tr> 
+                <th>
+                    Order progress
+                </th>
+                <th>
+                    Current sum
+                </th>
+                <th>
+                    Max sum
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr repeat.for="order of _orders">
+                <td>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="${order.orderCurrentSum}"
+                            aria-valuemin="0" aria-valuemax="100"
+                            css="width: ${order.orderCurrentSum / order.orderMaxSum * 100}%;"></div>
+                    </div>
+                </td>
+                <td>
+                    ${order.orderCurrentSum}
+                </td>
+                <td>
+                    ${order.orderMaxSum}
+                </td>
+                <td>
+                    <a route-href="route: order-details; params.bind: {id: order.id}">Details</a> | 
+                    <a route-href="route: order-edit; params.bind: {id: order.id}">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+ </div>
+ <div else>
+     <h1>Not found.</h1>
+ </div>
+</template>

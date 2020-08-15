@@ -1,0 +1,176 @@
+<template>
+    <div if.bind="appState.jwt == null" class="jumbotron">
+        <h1 class="display-4">Welcome to Thomann co-ordering!</h1>
+        <p class="lead">This web application allows you to order from  <a rel="noopener noreferrer" target="_blank" href="https://www.thomann.de/intl/ee/index.html">Thomann</a>  to Estonia cheaper. It combines the orders of many user into one,
+            allowing to save on delivery fees. </p>
+        <hr class="my-4">
+        <p>If you're facing any questions or concerns, do not hesitate to contact us. Also, please read the FAQ.</p>
+        <a class="btn btn-primary" route-href="route: faq;" role="button">Read FAQ</a>
+    </div>
+
+    <div if.bind="_alert != null" class="alert alert-danger" role="alert">
+        ${_alert.message}
+    </div>
+
+    <div if.bind="appState.jwt != null">
+        <div class="row">
+            <div class="col-md-4 order-md-2 mb-4">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Your cart</span>
+                    <span class="badge badge-secondary badge-pill">${_orderItems.length}</span>
+                </h4>
+                <ul class="list-group mb-3">
+
+                    <li repeat.for="item of _orderItems"
+                        class="list-group-item d-flex justify-content-between lh-condensed">
+                        <a href="${item.orderItemURL}" rel="noopener noreferrer" target="_blank" class="my-0 text-muted"
+                            id="order-item-name">${item.orderItemName}</a>
+                        <input type="number" id="order-item-qty" class="form-control" value="1" min="1"
+                            change.trigger="setItemQuantity($index)" value.from-view="_itemQuantity">
+
+
+                        <a href="#" class="card-link" id="order-item-comment-link-add" data-toggle="modal"
+                            data-target="#exampleModal" click.delegate="setCommentIndex($index)">Add comment</a>
+
+
+                        <strong class="text-muted" id="order-item-price">€${item.orderItemPrice}</strong>
+                        <i href="#" class="far fa-times-circle" click.delegate="removeItem($index)"></i>
+                    </li>
+
+                    <li if.bind="_discountCode != null" class="list-group-item d-flex justify-content-between bg-light">
+                        <div class="text-success">
+                            <h6 class="my-0">Promo code</h6>
+                            <small>${_discountCode.codeValue}</small>
+                        </div>
+                        <span class="text-success">-€${_totalPrice * _discountCode.discountMultiplier}</span>
+                    </li>
+
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>Total (EUR) + 2% fee</span>
+                        <strong>€${_totalPrice - _totalPrice * _discountCode.discountMultiplier + _feeFromPrice}</strong>
+                    </li>
+                </ul>
+
+                <form class="card p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Paste your link here..."
+                            value.bind="_itemLink">
+                        <div class="input-group-append">
+
+                            <button if.bind="!_isDataLoaded" class="btn btn-primary" type="button" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+
+                            <button else type="submit" class="btn btn-primary" click.delegate="pushItemData($event)">Add
+                                to
+                                order
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+
+                <form class="card p-2">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Have a promo code?"
+                            value.bind="_enteredCode">
+                        <div class="input-group-append">
+                            <button if.bind="!_isCodeResponseLoaded" class="btn btn-secondary" type="button" disabled>
+                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                Loading...
+                            </button>
+                            <button else type="submit" class="btn btn-secondary"
+                                click.delegate="getDicountCode(_enteredCode)">Redeem</button>
+                        </div>
+                    </div>
+                </form>
+                <p if.bind="_discountCodeAlert != null" style="color: red">${_discountCodeAlert.message}</p>
+
+            </div>
+            <div class="col-md-8 order-md-1">
+                <form submt.trigger="onSubmit($event)">
+                  
+                    <h4 class="mb-3">Delivery location</h4>
+
+                    <div class="d-block my-3">
+                        <div class="custom-control custom-radio">
+                          <input id="parcel-m" name="group2" type="radio" class="custom-control-input" model.bind="false" checked.bind="_pickup">
+                          <label class="custom-control-label" for="parcel-m">Order to an Omniva parcel machine</label>
+                          <span if.bind="!_pickup" class="badge badge-pill badge-info">Please note that parcel sending fee is added to the total price later</span>
+                          <span if.bind="!_pickup" class="badge badge-pill badge-info"> <a rel="noopener noreferrer" target="_blank" href="https://www.omniva.ee/public/files/failid/hinnakiri-pakk-pakiautomaat-ja-e-teenindus-era-est-ee-2017-new.pdf">Click here</a> to see Omniva parcel sending fees</span>
+
+                          <div class="row">
+                        <div class="col-md-6 mb-3">
+                                <select if.bind="_pickup" value.bind="_selectedParcelMachine"
+                                    class="custom-select" disabled>
+                                    <option model.bind="null">Choose...</option>
+                                    <option repeat.for="pMachine of _parcelMachines" model.bind="pMachine">
+                                        ${pMachine.parcelMachineName}
+                                </select>
+
+                                <select else value.bind="_selectedParcelMachine" class="custom-select">
+                                    <option model.bind="null">Choose...</option>
+                                    <option repeat.for="pMachine of _parcelMachines" model.bind="pMachine">
+                                        ${pMachine.parcelMachineName}
+                                </select>
+                            <h5 if.bind="!_pickup">
+                                ${ _selectedParcelMachine.county} ${_selectedParcelMachine.city}
+                                ${_selectedParcelMachine.cityPart != 'NULL' ? _selectedParcelMachine.cityPart :
+                                ''} ${_selectedParcelMachine.streetName != 'NULL' ?
+                                _selectedParcelMachine.streetName : ''} ${_selectedParcelMachine.streetNumber !=
+                                'NULL' ? _selectedParcelMachine.streetNumber : ''}
+                                ${_selectedParcelMachine.zipCode}
+                            </h5>
+                        </div>
+                    </div>
+
+                        </div>
+                        <div class="custom-control custom-radio">
+                          <input id="pickup" name="group2" type="radio" class="custom-control-input" model.bind="true" checked.bind="_pickup" >
+                          <label class="custom-control-label" for="pickup">I'll pick it up myself</label>
+                          <span if.bind="_pickup" class="badge badge-pill badge-info">Pickup location will be J. Poska 7, Tallinn</span>
+                          <span if.bind="_pickup" class="badge badge-pill badge-info">No parcel sending fee</span>
+                        </div>
+                      </div>
+              
+                    <hr class="mb-4">
+
+                    <button if.bind="_orderItems.length > 0" class="btn btn-primary btn-lg btn-block"
+                        click.delegate="onSubmit($event)">Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div else>
+        <h1>Please <a route-href="route: account-login; params.bind: {}">log in</a> or <a
+                route-href="route: account-register; params.bind: {}">register an account</a> to start your order.</h1>
+    </div>
+
+    <!-- Add comment modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add a comment</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+>
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Write your comment here..." value.bind="_commentText">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" click.delegate="addCommentToOrderItem()"
+                        data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</template>
