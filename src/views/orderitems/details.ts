@@ -1,3 +1,5 @@
+import { IParcelType } from './../../domain/IParcelType';
+import { ParcelTypeService } from './../../services/parcel-type-service';
 import { IComment } from './../../domain/IComment';
 import { CommentService } from './../../services/comment-service';
 import { IOrderStatus } from './../../domain/IOrderStatus';
@@ -22,16 +24,17 @@ export class OrderItemDetails {
     private _orderStatus?: IOrderStatus;
     private _order?: IOrder;
     private _comments: IComment[] = [];
+    private _parcelType?: IParcelType;
 
     constructor(private orderItemService: OrderItemService,
                 private orderService: OrderService,
                 private orderStatusService: OrderStatusService,
-                private commentService: CommentService) {
+                private commentService: CommentService,
+                private parcelTypeService: ParcelTypeService) {
 
     }
 
     attached() {
-
     }
 
     activate(params: any, routeConfig: RouteConfig, navigationInstruction: NavigationInstruction) {
@@ -82,7 +85,6 @@ export class OrderItemDetails {
                     }
                 }
             );
-        }
-        
+        }   
     }
 }

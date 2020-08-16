@@ -58,6 +58,14 @@
             <dd if.bind="_order.trackingLink != null" class="col-sm-10">
                 ${_order.trackingLink}
             </dd>
+            <dt if.bind="_parcelType != undefined">
+                Parcel info
+            </dt>
+            <dd if.bind="_parcelType != undefined" >
+                ${_parcelType.parcelTypeName}
+                ${_parcelType.parcelDimensions}
+                ${_parcelType.parcelSendingFee}
+            </dd>
         </dl>
     </div>
     

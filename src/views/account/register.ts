@@ -66,12 +66,6 @@ export class AccountRegister {
         );
     }
 
-    test() {
-        console.log(this._controller!.errors)
-
-        this._controller?.errors.forEach(element => {
-            element.message
-        });
-    }
+  
      
 }
