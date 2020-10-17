@@ -1,6 +1,6 @@
 # Thomann co-ordering app Aurelia frontend
 This web application allows you to order from Thomann to Estonia cheaper. It combines the orders of many user into one, allowing to save on delivery fees (To be more precise, starting from orders over 298 euros, the delivery is free, otherwise it's 20 euros)
- > The future plan would be the rewrite the app in Firebase and React, to take a break from the C# madness and relational database paradigms. And of course also to learn new technologies 🤼
+ > The future plan would be to rewrite the app in Firebase and React, to take a break from the C# madness and relational database paradigms. And of course, also, to learn new technologies 🤼
 
 Check out the deployed version [here](https://thorder-aurelia-client.vercel.app/#/). Or click the link on the right.
 
