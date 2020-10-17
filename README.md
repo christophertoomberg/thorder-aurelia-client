@@ -1,12 +1,22 @@
-# `au-ordering-app`
+# Thomann co-ordering app Aurelia frontend
+This web application allows you to order from Thomann to Estonia cheaper. It combines the orders of many user into one, allowing to save on delivery fees (To be more precise, starting from orders over 298 euros, the delivery is free, otherwise it's 20 euros)
+ > The future plan would be the rewrite the app in Firebase and React, to take a break from the C# madness and relational database paradigms. And of course also to learn new technologies 🤼
+
+Check out the deployed version [here](https://thorder-aurelia-client.vercel.app/#/). Or click the link on the right.
+
+The back-end API is written in C# (ASP NET core) and the Docker image is deployed on Azure.
+
+---
 
 This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
 
 For more information, go to https://aurelia.io/docs/cli/webpack
 
-## Run dev app
+## Run dev app locally
 
-Run `npm start`, then open `http://localhost:8080`
+Clone the repository.
+
+Run `npm install`, `au run` (alias for `npm start`), then open `http://localhost:8080`.
 
 You can change the standard webpack configurations from CLI easily with something like this: `npm start -- --open --port 8888`. However, it is better to change the respective npm scripts or `webpack.config.js` with these options, as per your need.
 
